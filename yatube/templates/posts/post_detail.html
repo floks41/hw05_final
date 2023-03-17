@@ -43,7 +43,8 @@
       <div class="card my-4">
         <h5 class="card-header">Добавить комментарий:</h5>
         <div class="card-body">
-          {% include 'posts/includes/form_snippet.html' %} 
+          {% url 'posts:add_comment' post_id=post.pk as add_comment %}
+          {% include 'posts/includes/form_snippet.html' with action_url=add_comment %} 
         </div> <!-- card-body -->
       </div> <!-- card my-4 -->
       {% endif %}

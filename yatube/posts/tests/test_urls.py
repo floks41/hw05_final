@@ -6,7 +6,7 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 
-from ..models import Group, Post
+from ..models import Follow, Group, Post
 
 User = get_user_model()
 
@@ -33,8 +33,12 @@ class TestPostURLS(TestCase):
             author=cls.user,
             text='Мой тестовый пост длиннее 15 букв'
         )
-        cls.user_not_author = User.objects.create_user(
-            username='TestUserNameNotAuthor'
+        cls.second_user = User.objects.create_user(
+            username='TestSecondUserName'
+        )
+        cls.follow = Follow.objects.create(
+            user=cls.second_user,
+            author=cls.user
         )
 
         cls.pages = cls.set_post_pages_description_batch(cls)
@@ -45,9 +49,9 @@ class TestPostURLS(TestCase):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(TestPostURLS.user)
-        self.authorized_not_author_client = Client()
-        self.authorized_not_author_client.force_login(
-            TestPostURLS.user_not_author
+        self.authorized_second_client = Client()
+        self.authorized_second_client.force_login(
+            TestPostURLS.second_user
         )
 
     def test_urls_for_guest_are_exist(self):
@@ -65,7 +69,7 @@ class TestPostURLS(TestCase):
         for page in self.pages.values():
             with self.subTest(address=page.url):
                 if page.is_login_required:
-                    response = self.authorized_client.get(
+                    response = self.authorized_second_client.get(
                         page.url,
                         follow=True
                     )

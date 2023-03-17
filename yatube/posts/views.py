@@ -55,11 +55,11 @@ def profile(request, username):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    following = False
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        if Follow.objects.filter(user=user, author=author).exists():
-            following = True
+    following: bool = (
+        request.user.is_authenticated
+        and Follow.objects.filter(
+            user=request.user, author=author).exists()
+    )
 
     context = {
         'author': author,
@@ -76,8 +76,7 @@ def post_detail(request, post_id):
     Если в запросе отправлена форма с комментарием,
     передаем запрос во view-функцию add_comment()
     """
-    if request.POST:
-        return add_comment(request=request, post_id=post_id)
+    
     template = 'posts/post_detail.html'
     post = get_object_or_404(Post, pk=post_id)
 
@@ -190,11 +189,9 @@ def profile_follow(request, username):
     """
     author = get_object_or_404(User, username=username)
 
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        if not Follow.objects.filter(user=user, author=author).exists():
-            if not author == user:
-                Follow.objects.create(user=user, author=author)
+    if not Follow.objects.filter(user=request.user, author=author).exists():
+        if not author == request.user:
+            Follow.objects.create(user=request.user, author=author)
     return redirect(
         reverse('posts:profile', kwargs={'username': username},))
 
@@ -204,10 +201,8 @@ def profile_unfollow(request, username):
     """Отменить подписку на автора."""
     author = get_object_or_404(User, username=username)
 
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        if Follow.objects.filter(user=user, author=author).exists():
-            Follow.objects.get(user=user, author=author).delete()
+    follow = get_object_or_404(Follow, user=request.user, author=author)
+    follow.delete()
 
     return redirect(
         reverse('posts:profile', kwargs={'username': username},))

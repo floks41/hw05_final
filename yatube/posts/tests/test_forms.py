@@ -175,7 +175,7 @@ class PostFormTests(TestCase):
 
     def test_comment_create(self):
         """Валидная форма комментария создает комментарий."""
-        page: PageDescription = self.pages['post_detail']
+        page: PageDescription = self.pages['add_comment']
 
         comments_count = Comment.objects.count()
         form_data = {
@@ -184,7 +184,6 @@ class PostFormTests(TestCase):
         response = self.authorized_client.post(
             page.reverse_name,
             data=form_data,
-            follow=True,
         )
 
         self.assertRedirects(
