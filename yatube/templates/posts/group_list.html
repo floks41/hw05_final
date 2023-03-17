@@ -11,6 +11,10 @@
     
 {% block content %}
   <p>{{ group.description }}</p>  
-  {% include 'posts/includes/posts_rollout_snippet.html' with is_group_template='True' %}
+  {% for post in page_obj %}
+    {% include 'posts/includes/post_snippet.html' with is_group_template='True'%}
+    {% if not for.loop.last %}<hr>{% endif %}
+  {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
 {% endblock  %}
       

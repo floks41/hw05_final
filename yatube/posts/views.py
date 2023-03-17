@@ -169,7 +169,7 @@ def follow_index(request):
     user = get_object_or_404(User, username=request.user.username)
 
     post_list = Post.objects.filter(
-        author__following__user__follower__user=user)
+        author__following__user__follower__user=user).distinct()
     paginator = Paginator(post_list, settings.NUMBER_OF_POSTS_TO_VIEW)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
