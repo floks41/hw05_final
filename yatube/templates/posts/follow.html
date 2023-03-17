@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block tab_title %}
+  Последние обновления на сайте 
+{% endblock  %}
+
+{% block header %}
+  Последние обновления на сайте
+{% endblock  %}
+
+{% block content %}
+  {% include 'posts/includes/switcher.html' with follow='True' %}
+  {% include 'posts/includes/posts_rollout_snippet.html' %}
+{% endblock %}
+    

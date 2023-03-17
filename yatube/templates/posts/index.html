@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block tab_title %}
+  Последние обновления на сайте
+{% endblock  %}
+
+{% block header %}
+  Последние обновления на сайте
+{% endblock  %}
+
+{% block content %}
+  {% load cache %}
+  {% cache 20 index_page %}
+  {% include 'posts/includes/switcher.html' with index='True' %}
+  {% include 'posts/includes/posts_rollout_snippet.html' %}
+  {% endcache %}
+{% endblock %}
+    

@@ -1,0 +1,5 @@
+{% for post in page_obj %}
+    {% include 'posts/includes/post_snippet.html'%}
+    {% if not for.loop.last %}<hr>{% endif %}
+{% endfor %}
+{% include 'posts/includes/paginator.html' %}

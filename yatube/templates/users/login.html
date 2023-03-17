@@ -1,0 +1,9 @@
+{% extends 'users/password_base.html' %}
+{% block tab_title %}Войти{% endblock %}
+{% block card_header %}Войти на сайт{% endblock %}
+{% block submit_button_text %}Войти{% endblock %}
+{% block next_to_submit_button %}
+<a href="{% url 'users:password_reset_form' %}" class="btn btn-link">
+  Забыли пароль?
+</a>
+{% endblock %}

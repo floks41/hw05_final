@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block tab_title %}
+  Профайл пользователя {{ author.get_full_name }}
+{% endblock  %}
+
+{% block header %}
+  {% if author.posts.count != 0 %}
+    Все посты пользователя {{ author.get_full_name }}
+  {% else %}
+    У пользователя {{ author.get_full_name }} еще нет постов
+  {% endif %}
+{% endblock  %}
+
+{% block content %}
+  {% if author.posts.count != 0 %}
+    <h3>Всего постов {{ author.posts.count  }} </h3>
+    {% include 'posts/includes/follow_unfollow_snippet.html'%}
+    {% include 'posts/includes/posts_rollout_snippet.html' with is_profile_template="True" %} 
+  {% endif %}
+{% endblock content %}
