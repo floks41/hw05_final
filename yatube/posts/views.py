@@ -76,7 +76,7 @@ def post_detail(request, post_id):
     Если в запросе отправлена форма с комментарием,
     передаем запрос во view-функцию add_comment()
     """
-    
+
     template = 'posts/post_detail.html'
     post = get_object_or_404(Post, pk=post_id)
 
